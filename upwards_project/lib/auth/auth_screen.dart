@@ -4,6 +4,7 @@ import 'package:upwards_project/auth/bloc/auth_bloc.dart';
 import 'package:upwards_project/auth/bloc/auth_event.dart';
 import 'package:upwards_project/auth/bloc/auth_repository.dart';
 import 'package:upwards_project/auth/bloc/auth_state.dart';
+import 'package:upwards_project/screens/main_screen.dart';
 import '../../core/app_colors.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -73,11 +74,19 @@ class _AuthScreenState extends State<AuthScreen> {
             child: BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state is AuthSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Вход выполнен!')),
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainScreen(
+                        accessToken: state.accessToken,
+                        refreshToken: state.refreshToken,
+                        group: state.group,
+                        fullName: state.fullName,
+                      ),
+                    ),
                   );
-                  // TODO: переход на другой экран
                 }
+
                 if (state is AuthFailure) {
                   ScaffoldMessenger.of(
                     context,

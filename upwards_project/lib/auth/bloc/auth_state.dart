@@ -12,11 +12,13 @@ class AuthLoading extends AuthState {}
 class AuthSuccess extends AuthState {
   final String accessToken;
   final String refreshToken;
+  final String group;
+  final String fullName;
 
-  AuthSuccess(this.accessToken, this.refreshToken);
+  AuthSuccess(this.accessToken, this.refreshToken, this.group, this.fullName);
 
   @override
-  List<Object?> get props => [accessToken, refreshToken];
+  List<Object?> get props => [accessToken, refreshToken, group, fullName];
 }
 
 class AuthFailure extends AuthState {

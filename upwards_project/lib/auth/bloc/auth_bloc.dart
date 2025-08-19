@@ -10,9 +10,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        final tokens = await authRepository.login(event.email, event.password);
-        // проверяем наличие ключей в ответе
-        emit(AuthSuccess(tokens['access'] ?? '', tokens['refresh'] ?? ''));
+        final data = await authRepository.login(event.email, event.password);
+        emit(
+          AuthSuccess(
+            data['access'] ?? '',
+            data['refresh'] ?? '',
+            data['group'] ?? '',
+            data['full_name'] ?? '',
+          ),
+        );
       } catch (e) {
         emit(AuthFailure(e.toString().replaceAll('Exception: ', '')));
       }
