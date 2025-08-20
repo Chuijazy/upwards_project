@@ -87,10 +87,10 @@ class ChinaScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(isTablet ? 80 : 56),
-        child: UserHeader(isTablet: isTablet),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(isTablet ? 80 : 56),
+      //   child: UserHeader(isTablet: isTablet),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

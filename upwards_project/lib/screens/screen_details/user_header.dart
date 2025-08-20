@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:upwards_project/core/app_colors.dart';
 
 class UserHeader extends StatelessWidget {
-  const UserHeader({super.key, required bool isTablet});
+  final String fullName;
+  final String group;
+
+  const UserHeader({
+    super.key,
+    required this.fullName,
+    required this.group,
+    required bool isTablet,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +32,18 @@ class UserHeader extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Row(
             children: [
-              IconButton(
-                icon: Icon(Icons.menu, size: iconSize, color: Colors.black87),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
+              Builder(
+                builder: (context) {
+                  return IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      size: iconSize,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  );
                 },
               ),
               SizedBox(width: 16),
@@ -40,7 +56,7 @@ class UserHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          'Александр Прокофьев',
+                          fullName,
                           style: TextStyle(
                             fontSize: nameFontSize,
                             color: AppColors.mainTextColor,
@@ -50,7 +66,7 @@ class UserHeader extends StatelessWidget {
                           maxLines: 1,
                         ),
                         Text(
-                          'Супер Админ',
+                          group,
                           style: TextStyle(
                             fontSize: roleFontSize,
                             color: AppColors.secondaryTextColor,
@@ -63,7 +79,7 @@ class UserHeader extends StatelessWidget {
                       radius: avatarRadius,
                       backgroundColor: AppColors.green,
                       child: Text(
-                        'AU',
+                        _getInitials(fullName),
                         style: TextStyle(
                           fontSize: avatarRadius * 0.7,
                           color: Colors.white,
@@ -79,5 +95,15 @@ class UserHeader extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
+    } else if (parts.isNotEmpty) {
+      return parts[0][0].toUpperCase();
+    }
+    return 'U';
   }
 }
