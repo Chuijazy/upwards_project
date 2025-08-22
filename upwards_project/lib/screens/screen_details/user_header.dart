@@ -23,7 +23,7 @@ class UserHeader extends StatelessWidget {
     final horizontalPadding = isTablet ? 32.0 : 16.0;
 
     return Container(
-      height: isTablet ? 80 : 56,
+      height: isTablet ? 80 : 80,
       width: double.infinity,
       color: Colors.white,
       child: SafeArea(

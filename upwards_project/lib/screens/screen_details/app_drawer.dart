@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:upwards_project/auth/bloc/auth_repository.dart';
 import 'package:upwards_project/core/app_colors.dart';
 import 'package:upwards_project/screens/china_screen.dart';
 
@@ -24,7 +25,7 @@ class _AppDrawerState extends State<AppDrawer> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset('assets/logo/logo.png', height: 40),
+                Image.asset('assets/logo/logo.png', height: 150),
                 IconButton(
                   onPressed: Navigator.of(context).pop,
                   icon: Icon(
@@ -74,7 +75,17 @@ class _AppDrawerState extends State<AppDrawer> {
           ListTile(
             leading: Image.asset('assets/icons/leave.png', height: 24),
             title: const Text('Выход'),
-            onTap: () => Navigator.pop(context),
+            onTap: () async {
+              Navigator.pop(context); // сначала закрываем Drawer
+
+              // Чистим токены
+              await AuthRepository().logout();
+
+              // Переходим на экран авторизации, заменяя стек
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/auth', (route) => false);
+            },
           ),
         ],
       ),
