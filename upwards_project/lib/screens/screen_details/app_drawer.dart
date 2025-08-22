@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upwards_project/auth/bloc/auth_repository.dart';
+import 'package:upwards_project/auth/auth_screen.dart';
+import 'package:upwards_project/auth/bloc/auth_storage.dart';
 import 'package:upwards_project/core/app_colors.dart';
 import 'package:upwards_project/screens/china_screen.dart';
 
@@ -76,15 +77,12 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: Image.asset('assets/icons/leave.png', height: 24),
             title: const Text('Выход'),
             onTap: () async {
-              Navigator.pop(context); // сначала закрываем Drawer
-
-              // Чистим токены
-              await AuthRepository().logout();
-
-              // Переходим на экран авторизации, заменяя стек
-              Navigator.of(
+              Navigator.pop(context); // закрываем Drawer
+              await AuthStorage.clearUserData(); // чистим токены и данные пользователя
+              Navigator.pushReplacement(
                 context,
-              ).pushNamedAndRemoveUntil('/auth', (route) => false);
+                MaterialPageRoute(builder: (_) => const AuthScreen()),
+              );
             },
           ),
         ],

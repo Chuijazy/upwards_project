@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'auth_storage.dart';
 
 class AuthRepository {
   final String baseUrl = 'http://68.183.90.19:8000/api/admin/auth/token/';
@@ -19,9 +18,5 @@ class AuthRepository {
     } else {
       throw Exception('Ошибка сервера: ${response.statusCode}');
     }
-  }
-
-  Future<void> logout() async {
-    await AuthStorage.clearTokens();
   }
 }

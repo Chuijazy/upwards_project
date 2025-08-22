@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:upwards_project/auth/bloc/auth_bloc.dart';
-import 'package:upwards_project/auth/bloc/auth_event.dart';
-import 'package:upwards_project/auth/bloc/auth_repository.dart';
-import 'package:upwards_project/auth/bloc/auth_state.dart';
-import 'package:upwards_project/screens/main_screen.dart';
-import '../../core/app_colors.dart';
+import 'bloc/auth_bloc.dart';
+import 'bloc/auth_event.dart';
+import 'bloc/auth_repository.dart';
+import 'bloc/auth_state.dart';
+import '../core/app_colors.dart';
+import '../screens/main_screen.dart';
+import '../auth/bloc/auth_storage.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -72,12 +73,20 @@ class _AuthScreenState extends State<AuthScreen> {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: BlocConsumer<AuthBloc, AuthState>(
-              listener: (context, state) {
+              listener: (context, state) async {
                 if (state is AuthSuccess) {
+                  // Сохраняем токены и данные пользователя
+                  await AuthStorage.saveUserData(
+                    accessToken: state.accessToken,
+                    refreshToken: state.refreshToken,
+                    fullName: state.fullName,
+                    group: state.group,
+                  );
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MainScreen(
+                      builder: (_) => MainScreen(
                         accessToken: state.accessToken,
                         refreshToken: state.refreshToken,
                         group: state.group,
@@ -111,6 +120,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     const SizedBox(height: 24),
 
+                    // Email field + ошибка
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -133,8 +143,10 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                       ],
                     ),
+
                     const SizedBox(height: 16),
 
+                    // Password field
                     _textFieldWithShadow(
                       controller: _passwordController,
                       hint: 'Пароль',
@@ -154,8 +166,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         },
                       ),
                     ),
+
                     const SizedBox(height: 24),
 
+                    // Login button
                     SizedBox(
                       width: 400,
                       height: 45,

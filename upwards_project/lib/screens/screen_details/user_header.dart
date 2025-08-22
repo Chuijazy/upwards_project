@@ -98,12 +98,16 @@ class UserHeader extends StatelessWidget {
   }
 
   String _getInitials(String name) {
-    final parts = name.trim().split(' ');
+    if (name.trim().isEmpty) return 'U'; // Если строка пустая
+
+    final parts = name.trim().split(' ').where((p) => p.isNotEmpty).toList();
+
     if (parts.length >= 2) {
       return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
     } else if (parts.isNotEmpty) {
       return parts[0][0].toUpperCase();
     }
-    return 'U';
+
+    return 'U'; // На случай пустого списка
   }
 }
